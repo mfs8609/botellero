@@ -22,6 +22,15 @@ class Detalle extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
+	
+	public function comprobarStock($attribute,$params)
+    {
+        $stock = Producto::model()->findByPK($this->idProducto);
+        
+        if($this->$attribute > $stock->stock)
+        	$this->addError($attribute,"La cantidad no debe ser mayor al stock del producto.");
+    }
+
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
@@ -30,6 +39,7 @@ class Detalle extends CActiveRecord
 			array('idProducto, cantidad', 'required'),
 			array('cantidad', 'numerical', 'integerOnly'=>true, 'min'=>1),
 			array('idFactura, idProducto', 'length', 'max'=>10),
+			array('cantidad', 'comprobarStock'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('idDetalle, idFactura, idProducto, cantidad', 'safe', 'on'=>'search'),
@@ -104,5 +114,16 @@ class Detalle extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function beforeSave()
+	{
+		$stock = Producto::model()->findByPK($this->idProducto);
+		
+		$resultado = $stock->stock - $this->cantidad;
+		$stock->stock = $resultado;
+		$stock->save();
+
+		return parent::beforeSave();
 	}
 }
