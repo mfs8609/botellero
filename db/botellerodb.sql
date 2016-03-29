@@ -1,0 +1,723 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.6
+-- http://www.phpmyadmin.net
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 29-03-2016 a las 03:57:16
+-- Versión del servidor: 5.6.16
+-- Versión de PHP: 5.5.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de datos: `botellerodb`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `baja`
+--
+
+CREATE TABLE IF NOT EXISTS `baja` (
+  `idBaja` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idProducto` int(10) unsigned NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  PRIMARY KEY (`idBaja`),
+  KEY `fk_Baja_Producto1_idx` (`idProducto`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `casa`
+--
+
+CREATE TABLE IF NOT EXISTS `casa` (
+  `idCasa` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idManzana` int(10) unsigned NOT NULL,
+  `idNumero` int(10) unsigned NOT NULL,
+  `citofono` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `servicio` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idCasa`),
+  KEY `fk_Casa_Manzana1_idx` (`idManzana`),
+  KEY `fk_Casa_Numero1_idx` (`idNumero`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+
+--
+-- Volcado de datos para la tabla `casa`
+--
+
+INSERT INTO `casa` (`idCasa`, `idManzana`, `idNumero`, `citofono`, `servicio`) VALUES
+(1, 1, 1, '101', 1),
+(2, 1, 2, '102', 1),
+(3, 1, 3, '103', 1),
+(4, 1, 4, '104', 1),
+(5, 1, 5, '105', 1),
+(6, 1, 6, '106', 1),
+(7, 1, 7, '107', 1),
+(8, 1, 8, '108', 0),
+(9, 1, 9, '109', 1),
+(10, 1, 10, '110', 1),
+(11, 2, 1, '201', 1),
+(12, 2, 2, '202', 1),
+(13, 2, 3, '203', 1),
+(14, 2, 4, '204', 1),
+(15, 2, 5, '205', 1),
+(16, 2, 6, '206', 1),
+(17, 2, 7, '207', 0),
+(18, 2, 8, '208', 1),
+(19, 2, 9, '209', 0),
+(20, 2, 10, '210', 1),
+(21, 3, 1, '301', 1),
+(22, 3, 2, '302', 1),
+(23, 3, 3, '303', 1),
+(24, 3, 4, '304', 1),
+(25, 3, 5, '305', 1),
+(26, 3, 6, '306', 1),
+(27, 3, 7, '307', 1),
+(28, 3, 8, '308', 1),
+(29, 3, 9, '309', 1),
+(30, 3, 10, '310', 1),
+(31, 4, 1, '401', 1),
+(32, 4, 2, '402', 1),
+(33, 4, 3, '403', 1),
+(34, 4, 4, '404', 1),
+(35, 4, 5, '405', 1),
+(36, 4, 6, '406', 1),
+(37, 4, 7, '407', 1),
+(38, 4, 8, '408', 1),
+(39, 4, 9, '409', 1),
+(40, 4, 10, '410', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle`
+--
+
+CREATE TABLE IF NOT EXISTS `detalle` (
+  `idDetalle` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idFactura` int(10) unsigned NOT NULL,
+  `idProducto` int(10) unsigned NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idDetalle`),
+  KEY `fk_Detalle_Factura1_idx` (`idFactura`),
+  KEY `fk_Detalle_Producto1_idx` (`idProducto`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `deuda`
+--
+
+CREATE TABLE IF NOT EXISTS `deuda` (
+  `idDeuda` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idFactura` int(10) unsigned NOT NULL,
+  `nombresPersona` varchar(45) NOT NULL,
+  `valorDeber` float NOT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`idDeuda`),
+  KEY `fk_Deuda_Factura1_idx` (`idFactura`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factura`
+--
+
+CREATE TABLE IF NOT EXISTS `factura` (
+  `idFactura` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fechaVenta` datetime NOT NULL,
+  `idVendedor` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idFactura`),
+  KEY `fk_Factura_Vendedor1_idx` (`idVendedor`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=107 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `habitante`
+--
+
+CREATE TABLE IF NOT EXISTS `habitante` (
+  `idHabitante` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombresHabitante` varchar(50) NOT NULL,
+  `apellidosHabitante` varchar(50) NOT NULL,
+  `genero` char(1) NOT NULL,
+  `fechaNacimiento` date DEFAULT NULL,
+  `numeroContactoHabitante` varchar(50) DEFAULT NULL,
+  `propietario` tinyint(1) NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  `idCasa` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idHabitante`),
+  KEY `fk_Habitante_Casa1_idx` (`idCasa`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
+
+--
+-- Volcado de datos para la tabla `habitante`
+--
+
+INSERT INTO `habitante` (`idHabitante`, `nombresHabitante`, `apellidosHabitante`, `genero`, `fechaNacimiento`, `numeroContactoHabitante`, `propietario`, `activo`, `idCasa`) VALUES
+(1, 'JOSE JULIAN', 'CHAVEZ TRUJILLO', 'M', '1993-08-19', '3115237686', 0, 1, 11),
+(2, 'LEANDRO', 'CHAVEZ TRUJILLO', 'M', '1995-01-25', '3112910565', 0, 1, 11),
+(3, 'LUCRECIA', 'TRUJILLO MUÑOZ', 'F', '1964-09-15', '3107569066', 1, 1, 11),
+(4, 'JOSE', 'CHAVEZ TORRES', 'M', '1971-02-05', '3123780633', 1, 1, 11),
+(5, 'JEIMMY', 'CABRERA TRUJILLO', 'F', '1986-06-22', '3125012848', 0, 0, 11),
+(6, 'MERY ALICIA', 'ORDOÑEZ CAMACHO', 'F', '1951-07-10', '3125329298', 1, 1, 1),
+(7, 'LUIS EMILIO', 'MAJE GUEVARA', 'M', '1948-05-10', '3124199677', 1, 1, 1),
+(8, 'YEISON ANDRES', 'MAJE ORDOÑEZ', 'M', '1993-07-29', '3209988156', 0, 1, 1),
+(9, 'MERY ROCIO', 'MAJE ORDOÑEZ', 'F', '1981-02-04', '3125816321', 0, 1, 1),
+(10, 'MARYELI', 'MAJE ORDOÑEZ', 'F', '1974-12-18', '3142626547', 0, 0, 1),
+(11, 'GREGORIO ', 'CERON CALDERON', 'M', '1980-06-29', '3185248134', 1, 1, 2),
+(12, 'NATALY', 'ERAZO ', 'F', '1986-08-05', '3158255976', 1, 1, 2),
+(13, 'JOSE GREGORI', 'CERON ERAZO', 'M', '2006-02-06', '', 0, 1, 2),
+(14, 'MARIA SHOFIA', 'CERON ERAZO', 'F', '2009-08-14', '', 0, 1, 2),
+(15, 'ELIECER ', 'BOLAÑOS ERASO', 'M', '1960-03-18', '3115143009', 1, 1, 17),
+(16, 'LAURA CAMILA', 'BOLAÑOS LOSADA', 'F', '1993-12-24', '3223069071', 0, 0, 17),
+(17, 'CARLOS HERMOGENES', 'SOTO RUBIANO', 'M', '1964-12-13', '3133695776', 1, 1, 19),
+(18, 'ESPERANZA', 'RUIZ ROJAS', 'F', '0000-00-00', '3157036659', 1, 1, 19),
+(19, 'AMINTA', 'RODRIGUEZ ROJAS', 'F', '1973-03-19', '3112038334', 1, 1, 13),
+(20, 'PAOLA ', 'ARANDA RODRIGUEZ', 'F', '1995-05-12', '3165862700', 0, 1, 13),
+(21, 'JOSE ARLEY', 'ARANDA RODRIGUEZ', 'M', '1996-09-30', '3219943934', 0, 1, 13),
+(22, 'EDNA YULIETH', 'ARANDA RODRIGUEZ', 'F', '1998-04-22', '3204561653', 0, 1, 13),
+(23, 'MARIA MANUELA', 'ANGULO RODRIGUEZ', 'F', '2013-07-15', '', 0, 1, 13),
+(24, 'MANUEL OSVALDO', 'ANGULO SANDOVAL', 'M', '1961-05-13', '3132911826', 0, 0, 13),
+(25, 'FRANCISCO ANTONIO', 'SOTO RUBIANO', 'M', '1956-04-18', '3118981514', 1, 1, 15),
+(26, 'OSCAR', 'BOLAÑOS LOSADA', 'M', '0000-00-00', '', 0, 0, 17),
+(27, 'NANCY IRENE', 'PORTILLA ROSERO', 'F', '1984-11-15', '3134708748', 1, 1, 36),
+(28, 'PAOLA ANDREA ', 'PORTILLA ROSERO', 'F', '1995-04-18', '3138809476', 0, 1, 36),
+(29, 'MAIDE YISETH', 'PORTILLA ROSERO', 'F', '1993-10-23', '0388367662', 0, 1, 36),
+(30, 'EMILIANO', 'MUÑOZ PORTILLA', 'M', '2011-07-13', '', 0, 1, 36),
+(31, 'ILIANA ', 'MUÑOZ PORTILLA', 'F', '2009-05-22', '', 1, 1, 36),
+(32, 'FELIX ', 'MONTOYA', 'M', '1968-07-20', '3118204156', 1, 1, 40),
+(33, 'KAREN YICETH', 'MONTOYA PARRA', 'F', '1995-08-10', '3144497628', 0, 1, 40),
+(34, 'AMALIA', 'PARRA SCALANTE', 'F', '1972-09-25', '3214533226', 1, 1, 40),
+(35, 'ANA KARINA', 'CALDERON SILV', 'F', '2003-04-06', '3203364548', 0, 1, 20),
+(36, 'ISMELDA', 'SILVA GOMEZ', 'F', '1971-02-06', '3114747856', 1, 1, 20),
+(37, 'OMAR', 'CALDERON TAVERA', 'M', '1954-11-30', '3143732434', 1, 1, 20),
+(38, 'LAURA CAMILA', 'CALDERON SILVA', 'F', '1996-06-13', '3208477719', 0, 1, 20),
+(39, 'SILVIA CRISTINA', 'VASQUEZ CASTRO', 'F', '1979-06-12', '3102392469', 0, 1, 30),
+(40, 'ECNA XIMENA', 'VASQUEZ CASTRO', 'F', '1980-10-14', '3134650844', 0, 1, 30),
+(41, 'ERMA GENOVEVA', 'CASTRO TORO', 'F', '1961-05-06', '', 1, 1, 30),
+(42, 'LUZ DARY', 'CEDEÑO', 'F', '1964-05-26', '3214039677', 0, 1, 38),
+(43, 'DIANA MARCELA', 'PASTRANA', 'F', '1985-11-10', '', 0, 1, 38),
+(44, 'ANA MILENA', 'PASTRANA', 'F', '1986-12-22', '', 0, 1, 38),
+(45, 'REINALDO', 'PASTRANA', 'M', '1955-10-02', '', 0, 1, 38),
+(46, 'VICKY', 'PLAZAS', 'F', '1989-02-11', '3124323357', 0, 1, 38),
+(47, 'THOMAS JEFERSON', 'CORTEZ PASTRANA', 'M', '2003-03-12', '', 0, 1, 38),
+(48, 'JUAN SEBASTIAN', 'CORTEZ PASTRANA', 'M', '2003-04-12', '', 0, 1, 38),
+(49, 'MARIA JOSE', 'MONTEALEGRE', 'F', '2010-03-30', '', 0, 1, 38),
+(50, 'ALISON SAMANTA', 'PLAZAS PLAZA', 'F', '2004-08-27', '', 0, 1, 38),
+(51, 'MARTA ISABEL', 'CABRERA MOLINA', 'F', '1964-09-01', '3114225306', 1, 1, 28),
+(52, 'JUAN JOSE', 'MARTINEZ', 'M', '1995-08-22', '', 0, 1, 28),
+(53, 'JUAN JOSE', 'MARTINEZ', 'M', '1995-08-22', '', 0, 1, 28),
+(54, 'HECTOR', 'MARTINEZ', 'M', '1999-06-30', '', 0, 1, 28),
+(55, 'ANGELICA', 'CORREAL VARGAS', 'F', '1979-01-25', '3174024155', 1, 1, 6),
+(56, 'SERGIO ALEJANDRO', 'ROJAS', 'M', '1999-12-05', '', 0, 1, 6),
+(57, 'CAROL TATIANA', 'ROJAS', 'F', '2003-07-15', '', 0, 1, 6),
+(58, 'VANESSA', 'ROJAS CORREAL', 'F', '2006-03-25', '', 0, 1, 6),
+(59, 'FRORALBA', 'VARGAS', 'F', '1957-12-04', '3174279901', 1, 1, 6),
+(60, 'CLAUDIA PATRICIA', 'MARTINEZ REYES', 'F', '1977-04-24', '3134921641', 1, 1, 3),
+(61, 'MARIA JOSE', 'VARGAS MARTINEZ', 'F', '2000-05-29', '3145789846', 0, 1, 3),
+(62, 'CLARA ISABELLA', 'CLAROS MARTINEZ', 'F', '2013-06-09', '', 0, 1, 3),
+(63, 'DANIELA SOFIA', 'ZUÑIGA CERON', 'F', '2001-04-06', '3174984670', 0, 1, 4),
+(64, 'SANDRA YILENA', 'CERON CALDERON', 'F', '1983-07-16', '3138671973', 1, 1, 4),
+(65, 'MIGUEL ANGEL', 'ZUÑIGA PEÑA', 'M', '1982-02-10', '3214497693', 1, 1, 4),
+(66, 'CESAR', 'MORALES GRILLO', 'M', '1968-09-15', '3133575950', 1, 1, 7),
+(67, 'DENIS', 'GARCIA', 'F', '1969-04-05', '3133575950', 1, 1, 7),
+(68, 'WINNY KATHERIN', 'MORALES', 'F', '1994-08-29', '', 0, 1, 7),
+(69, 'TATIANA', 'MORALES', 'F', '1991-12-07', '', 0, 1, 7),
+(70, 'SHELSY DANIELA', 'MORALES', 'F', '2000-06-08', '', 0, 1, 7),
+(71, 'LUIS ALFONSO', 'MAMIAN CAMPO', 'M', '1966-11-20', '3108177043', 1, 1, 14),
+(72, 'EDITH', 'VASQUEZ PRIETO', 'F', '1973-02-01', '3138842565', 1, 1, 25),
+(73, 'ANDRES FEPILE', 'RAMIREZ VASQUEZ', 'M', '2010-08-23', '', 0, 1, 25),
+(74, 'LAURA DANIELA', 'RAMIREZ VASQUEZ', 'F', '2004-11-08', '', 0, 1, 25),
+(75, 'YURI VIVIANA', 'LUNA PALMA', 'F', '1995-01-04', '3125609343', 0, 1, 25),
+(76, 'HAROLD', 'RAMIREZ VASQUEZ', 'M', '1991-12-02', '3187401554', 0, 1, 25),
+(77, 'JUAN DAVID', 'RAMIREZ VASQUEZ', 'M', '1995-11-14', '3124859761', 0, 1, 25),
+(78, 'CESAR AUGUSTO', 'SALAMANCA BERNAL', 'M', '1977-10-03', '3134272679', 1, 1, 39),
+(79, 'MARITZA', 'MURCIA MUÑOZ', 'F', '1976-06-22', '3114752318', 1, 1, 39),
+(80, 'MARIA MANUELA', 'SALAMANCA MURCIA', 'F', '2004-12-27', '', 0, 1, 39),
+(81, 'LAURA ISABELA', 'SALAMANCA MURCIA', 'F', '2001-12-28', '', 0, 1, 39),
+(82, 'ALBA DIELA', 'CARVAJAL VARGAS', 'F', '1949-12-26', '3222209429', 0, 1, 33),
+(83, 'MARELVI', 'NEUTA CARVAJAL', 'F', '2016-07-20', '3224577974', 0, 1, 33),
+(84, 'JOSE ANTONIO', 'NEUTA CARVAJAL', 'M', '2016-07-26', '3125974102', 0, 1, 33),
+(85, 'JESUS', 'NEUTA GOMEZ', 'M', '1947-04-27', '3143635269', 0, 1, 33),
+(86, 'HAROLD YESID', 'NEUTA CARVAJAL', 'M', '2016-08-06', '3212426857', 0, 1, 33);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `manzana`
+--
+
+CREATE TABLE IF NOT EXISTS `manzana` (
+  `idManzana` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `manzana` char(1) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`idManzana`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `manzana`
+--
+
+INSERT INTO `manzana` (`idManzana`, `manzana`) VALUES
+(1, 'A'),
+(2, 'B'),
+(3, 'C'),
+(4, 'D');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `numero`
+--
+
+CREATE TABLE IF NOT EXISTS `numero` (
+  `idNumero` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `numero` varchar(2) NOT NULL,
+  PRIMARY KEY (`idNumero`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Volcado de datos para la tabla `numero`
+--
+
+INSERT INTO `numero` (`idNumero`, `numero`) VALUES
+(1, '1'),
+(2, '2'),
+(3, '3'),
+(4, '4'),
+(5, '5'),
+(6, '6'),
+(7, '7'),
+(8, '8'),
+(9, '9'),
+(10, '10');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedido`
+--
+
+CREATE TABLE IF NOT EXISTS `pedido` (
+  `idPedido` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idProducto` int(10) unsigned NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precioCompra` float NOT NULL,
+  `idProveedor` int(10) unsigned NOT NULL,
+  `fechaPedido` datetime NOT NULL,
+  PRIMARY KEY (`idPedido`),
+  KEY `fk_Pedido_Producto1_idx` (`idProducto`),
+  KEY `fk_Pedido_Proveedor1_idx` (`idProveedor`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `producto`
+--
+
+CREATE TABLE IF NOT EXISTS `producto` (
+  `idProducto` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(100) NOT NULL,
+  `precioCosto` float NOT NULL,
+  `precioVenta` float NOT NULL,
+  `stock` int(11) NOT NULL,
+  `fechaIngreso` date NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idProducto`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=287 ;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`idProducto`, `descripcion`, `precioCosto`, `precioVenta`, `stock`, `fechaIngreso`, `activo`) VALUES
+(1, 'ACEITE RICAPALMA X 110 CC', 725, 900, 0, '2016-03-03', 1),
+(2, 'ACEITE RICAPALMA X 250 CC', 1400, 1750, 0, '2016-03-03', 0),
+(3, 'ACEITE SABOR X 250 CC', 1475, 1850, 0, '2016-03-03', 0),
+(4, 'ACEITE SABOR X 500 CC', 2450, 3250, 0, '2016-03-03', 0),
+(5, 'ACETAMINOFEN ', 40, 100, 0, '2016-03-03', 0),
+(6, 'ADVIL MAX', 953, 1200, 0, '2016-03-03', 0),
+(7, 'AGUA EN BOLSA EXTRA', 80, 200, 0, '2016-03-03', 0),
+(8, 'AGUA EN BOTELLA CRISTAL', 1254, 1600, 0, '2016-03-03', 0),
+(9, 'AGUA EN BOTELLA EXTRA', 771, 1000, 0, '2016-03-03', 1),
+(10, 'AGUA EN BOTELLA H2O', 1733, 2200, 0, '2016-03-03', 0),
+(11, 'AGUARDIENTE', 11650, 15000, 0, '2016-03-03', 0),
+(12, 'AGUARDIENTE SIN AZUCAR', 11250, 15000, 0, '2016-03-03', 1),
+(13, 'ALKASELTZER', 400, 500, 0, '2016-03-03', 0),
+(14, 'AMOXICILINA LA SANTE', 300, 400, 0, '2016-03-03', 0),
+(15, 'AREQUIPITO', 641, 800, 0, '2016-03-03', 0),
+(16, 'ARROZ', 1540, 1900, 0, '2016-03-03', 0),
+(17, 'ASPIRINA EFERVECENTE', 464, 600, 0, '2016-03-03', 0),
+(18, 'ATUN LOMITOS ACEITE', 3800, 4750, 0, '2016-03-03', 0),
+(19, 'ATUN LMITOS AGUA', 4350, 5400, 0, '2016-03-03', 0),
+(20, 'AVENA NATURAL BOLSA ALPINA', 855, 1000, 0, '2016-03-03', 0),
+(21, 'AZUCAR', 1250, 1600, 0, '2016-03-03', 0),
+(22, 'AZUL KLEAN X 150', 700, 1000, 0, '2016-03-03', 0),
+(23, 'BICARBONATO', 229, 300, 0, '2016-03-03', 0),
+(24, 'BIG BOM', 148, 200, 0, '2016-03-03', 0),
+(25, 'BOCADILLO BELEÑO', 329, 400, 0, '2016-03-03', 0),
+(26, 'BOCADILLO COMBINADO', 242, 300, 0, '2016-03-03', 0),
+(27, 'BOLIQUESO', 500, 600, 0, '2016-03-03', 0),
+(28, 'BOLSAS PARA BASURA', 169, 250, 0, '2016-03-03', 0),
+(29, 'BOM BOM BUM PIM POP', 156, 200, 0, '2016-03-03', 0),
+(30, 'BOM BOM BUM TRADICIONAL', 160, 250, 0, '2016-03-03', 0),
+(31, 'BONFIEST LUA PLUS', 1375, 1600, 0, '2016-03-03', 0),
+(32, 'BONYOURT CHOCOGOZZO CHOCOCRISPIS ZUCARITAS', 1966, 2450, 0, '2016-03-03', 0),
+(33, 'BUSCAPINA COMPUESTA', 850, 1000, 0, '2016-03-03', 0),
+(34, 'BUSCAPINA FEM', 866, 1100, 0, '2016-03-03', 0),
+(35, 'CAFE SELLO ROJO X 50 GMS', 820, 1000, 0, '2016-03-03', 0),
+(36, 'CALMIDOL COMPUESTO', 800, 1000, 0, '2016-03-03', 0),
+(37, 'CARVE', 1716, 2150, 0, '2016-03-03', 0),
+(38, 'CEPILLO COLGATE', 1260, 1600, 0, '2016-03-03', 0),
+(39, 'CEPILLO Y CREMA COLGATE', 1800, 2250, 0, '2016-03-03', 0),
+(40, 'CEREALES CHOCOCRISPIS - ZUCARITAS', 683, 900, 0, '2016-03-03', 0),
+(41, 'CERVEZA AGUILA LATA', 1387, 1900, 0, '2016-03-03', 0),
+(42, 'CERVEZA AGUILA LIGHT LATON', 1800, 2400, 0, '2016-03-03', 0),
+(43, 'CERVEZA POKER LATON', 1633, 2300, 0, '2016-03-03', 0),
+(44, 'CERVEZA AGUILON', 2063, 2800, 0, '2016-03-03', 0),
+(45, 'CERVEZA CLUB COLOMBIA LATA', 1600, 2000, 0, '2016-03-03', 0),
+(46, 'CERVEZA MILLER', 1040, 1040, 0, '2016-03-03', 0),
+(47, 'CERVEZA REDDS LATA', 1604, 1604, 0, '2016-03-03', 0),
+(48, 'CHAMPU H&S', 397, 600, 0, '2016-03-03', 0),
+(49, 'CHEESETRIS', 771, 1000, 0, '2016-03-03', 0),
+(50, 'CHEETOS FAMILIAR', 945, 1100, 0, '2016-03-03', 0),
+(51, 'QUIPITOS', 342, 500, 0, '2016-03-03', 0),
+(52, 'RICOSTILLA CUBOS', 221, 300, 0, '2016-03-03', 0),
+(53, 'CHEETOS PICANTE ', 950, 1200, 0, '2016-03-03', 0),
+(54, 'CHICLE TRIDENT GRANDE', 722, 1000, 0, '2016-03-03', 0),
+(55, 'CHICLE TRIDENT MEDIANO', 313, 500, 0, '2016-03-03', 0),
+(56, 'CHICLE TRIDENT PEQUEÑO', 119, 200, 0, '2016-03-03', 0),
+(57, 'CHICLE TRIDENT TOTAL MENTA', 725, 900, 0, '2016-03-03', 0),
+(58, 'CHOCLITOS', 421, 600, 0, '2016-03-03', 0),
+(59, 'CHOCOLATE BOGOTANO BARRA', 285, 350, 0, '2016-03-03', 0),
+(60, 'CHOCOLATINA CUADRICULA', 73, 100, 0, '2016-03-03', 0),
+(61, 'CHOCOLATINA JET BURBUJA', 333, 450, 0, '2016-03-03', 0),
+(62, 'CHOCOLATINA JET COOKIES & CREAM', 1456, 1800, 0, '2016-03-03', 0),
+(63, 'CHOCOLATINA JET GOL', 465, 600, 0, '2016-03-03', 0),
+(64, 'CHOCOLATINA JET GRANDE', 779, 1000, 0, '2016-03-03', 0),
+(65, 'CHOCOLATINA JET LECHE', 277, 350, 0, '2016-03-03', 0),
+(66, 'CHOCOLATINA JET SAURIOUS', 130, 200, 0, '2016-03-03', 0),
+(67, 'CHOCOLATIN JUMBO FLOW', 775, 1000, 0, '2016-03-03', 0),
+(68, 'CHOCOLATINA JUMBO FLOW MINI', 387, 600, 0, '2016-03-03', 0),
+(69, 'CHOCOLATINA JUMBO MANI', 1060, 1300, 0, '2016-03-03', 0),
+(70, 'CHOCOLATINA JUMBO MINI', 460, 600, 0, '2016-03-03', 0),
+(71, 'CHOCOLATINA JET BLANCA', 789, 1000, 0, '2016-03-03', 0),
+(72, 'CIGARIILOS BOSTON X 20', 2535, 3200, 0, '2016-03-03', 0),
+(73, 'CIGARRILLOS MUSTANG X 10 ', 1340, 1700, 0, '2016-03-03', 0),
+(74, 'CIGARRILLOS MUSTANG X 20', 2680, 3350, 0, '2016-03-03', 0),
+(75, 'COLA Y POLA LITRO', 1760, 3600, 0, '2016-03-03', 0),
+(76, 'COLCAFE SOBRE', 76, 200, 0, '2016-03-03', 0),
+(77, 'COLOR REY', 175, 300, 0, '2016-03-03', 0),
+(78, 'CREMA DE LECHE NESTLE', 1470, 1700, 0, '2016-03-03', 0),
+(79, 'RICOSTILLA SOBRE', 198, 300, 0, '2016-03-03', 0),
+(80, 'CREMA DENTAL COLGATE MENTA', 900, 1100, 0, '2016-03-03', 0),
+(81, 'CREMA DENTAL COLGATE TRIPLE ACCION', 850, 1200, 0, '2016-03-03', 0),
+(82, 'CURITAS', 35, 100, 0, '2016-03-03', 0),
+(83, 'RON VIEJO DE CALDAS MEDIA', 14200, 18500, 0, '2016-03-03', 0),
+(84, 'DETODITO', 1033, 1300, 0, '2016-03-03', 0),
+(85, 'DETODITO LIMON', 1292, 1600, 0, '2016-03-03', 0),
+(86, 'ROSQUITAS', 858, 1100, 0, '2016-03-03', 0),
+(87, 'DOLEX FORTE', 746, 900, 0, '2016-03-03', 0),
+(88, 'DOLEX GRIPA', 490, 800, 0, '2016-03-03', 0),
+(89, 'SABRAS', 138, 200, 0, '2016-03-03', 0),
+(90, 'DOLEX GRIPA AZUL', 600, 750, 0, '2016-03-03', 0),
+(91, 'DOLEX NIÑO', 490, 600, 0, '2016-03-03', 0),
+(92, 'SAL', 398, 500, 0, '2016-03-03', 0),
+(93, 'DORITOS', 946, 1100, 0, '2016-03-03', 0),
+(94, 'DULCES BARRILETE', 70, 100, 0, '2016-03-03', 0),
+(95, 'DULCES BOCADILLOS', 85, 100, 0, '2016-03-03', 0),
+(96, 'SAL DE FRUTAS LUA', 880, 1100, 0, '2016-03-03', 0),
+(97, 'DULCES BUBALU ROCKS', 71, 100, 0, '2016-03-03', 0),
+(98, 'DULCES CHICLES TUMIX', 59, 100, 0, '2016-03-03', 0),
+(99, 'DULCES CHICLETS ADAMS', 69, 100, 0, '2016-03-03', 0),
+(100, 'DULCES CHOCOBREAK', 88, 100, 0, '2016-03-03', 0),
+(101, 'SALCHICHA RANCHERA PENTA', 2850, 3500, 0, '2016-03-03', 0),
+(102, 'DULCES FERIAS', 71, 100, 0, '2016-03-03', 0),
+(103, 'DULCES GUSANOS GRISLY', 78, 100, 0, '2016-03-03', 0),
+(104, 'DULCES HALLS NEGRO', 65, 100, 0, '2016-03-03', 0),
+(105, 'DULCES HALLS SURTIDO', 65, 100, 0, '2016-03-03', 0),
+(106, 'DULCES PANELITAS', 65, 100, 0, '2016-03-03', 0),
+(107, 'DULCES SPARKIES', 73, 100, 0, '2016-03-03', 0),
+(108, 'DULCES TORTUGAS', 77, 100, 0, '2016-03-03', 0),
+(109, 'SALCHICHA TARRO ZENU X 150 G', 2150, 2700, 0, '2016-03-03', 0),
+(110, 'DULCES ALMENDRAS', 29, 50, 0, '2016-03-03', 0),
+(111, 'SALCHICHA TRIPACK RICA', 800, 1000, 0, '2016-03-03', 0),
+(112, 'DULCES AROS', 69, 100, 0, '2016-03-03', 0),
+(113, 'SALCHICHON MINI RICA POLLO', 1252, 1600, 0, '2016-03-03', 0),
+(114, 'SALSA DE TOMATE FRUCO', 825, 1000, 0, '2016-03-03', 0),
+(115, 'DULCES GUSANITOS', 38, 50, 0, '2016-03-03', 0),
+(116, 'DULCES MENTA CHAO', 35, 50, 0, '2016-03-03', 0),
+(117, 'SALSA ROSADA FRUCO', 717, 900, 0, '2016-03-03', 0),
+(118, 'DULCES MENTA LECHE SNOW', 37, 50, 0, '2016-03-03', 0),
+(279, 'GASEOSA COCA COLA 350 ML', 1030, 1300, 0, '2016-03-03', 0),
+(120, 'DULCES SPLOT TATTO', 37, 50, 0, '2016-03-03', 0),
+(121, 'DURAFEX MUSCULAR', 1200, 1500, 0, '2016-03-03', 0),
+(122, 'SARDINA BOCADO DE MAR CILIN', 3000, 3750, 0, '2016-03-03', 0),
+(123, 'ESPONJA DE ALAMBRE', 118, 250, 0, '2016-03-03', 0),
+(124, 'ESPONJA EXPERTA PLATA ORO', 800, 1000, 0, '2016-03-03', 0),
+(125, 'SARDINA BOCADO DE MAR OVAL', 2750, 3400, 0, '2016-03-03', 0),
+(119, 'ESPONJA MATRIX', 375, 500, 0, '2016-03-03', 0),
+(127, 'ESPONJILLON', 173, 200, 0, '2016-03-03', 0),
+(128, 'SEVEDOL', 550, 800, 0, '2016-03-03', 0),
+(129, 'ESPORADE', 1000, 1300, 0, '2016-03-03', 0),
+(130, 'FABULOSO X 200 CC', 900, 1100, 0, '2016-03-03', 0),
+(131, 'SOFLAN SOBRE X 180 G', 628, 800, 0, '2016-03-03', 0),
+(253, 'GALLETAS MAMUT', 167, 200, 0, '2016-03-03', 0),
+(133, 'FOSFOROS', 85, 200, 0, '2016-03-03', 0),
+(134, 'FRUNAS', 145, 200, 0, '2016-03-03', 0),
+(135, 'SOFLAN SOBRE X 40 G', 210, 300, 0, '2016-03-03', 0),
+(136, 'FRUTIÑO', 428, 550, 0, '2016-03-03', 0),
+(137, 'FUZE TEA', 1417, 1800, 0, '2016-03-03', 0),
+(138, 'GALLETAS CHOCOMIX NOEL', 209, 300, 0, '2016-03-03', 0),
+(139, 'SUNTEE CON GAS', 1282, 1600, 0, '2016-03-03', 0),
+(140, 'GALLETAS CLUB SOCIAL', 300, 400, 0, '2016-03-03', 0),
+(141, 'GALLETAS DUCALES MITITACO', 1357, 1700, 0, '2016-03-03', 0),
+(142, 'TOALLAS HIGIENICAS', 280, 350, 0, '2016-03-03', 0),
+(143, 'GALLETAS DUCALES X 2', 3306, 4000, 0, '2016-03-03', 0),
+(144, 'GALLETAS FESTIVAL X 6', 386, 500, 0, '2016-03-03', 0),
+(145, 'TOSTADAS BIMBO', 1600, 2000, 0, '2016-03-03', 0),
+(146, 'TOSTADAS INTEGRAL', 1700, 2100, 0, '2016-03-03', 0),
+(147, 'TROCILLOS DE QUESO', 146, 200, 0, '2016-03-03', 0),
+(148, 'VELA CORRIENTE', 195, 300, 0, '2016-03-03', 0),
+(149, 'VIVE 100 GRANDE', 1731, 2200, 0, '2016-03-03', 0),
+(150, 'VIVE 100 PEQUEÑO', 1298, 1600, 0, '2016-03-03', 0),
+(132, 'YOGO BOLSA X 150 G', 599, 800, 0, '2016-03-03', 0),
+(126, 'YOGURT DE FRUTAS', 1025, 1300, 0, '2016-03-03', 0),
+(153, 'YOGURT YOGO VASO', 601, 750, 0, '2016-03-03', 0),
+(154, 'GALLETAS MINICHIPS', 538, 800, 0, '2016-03-03', 0),
+(155, 'GALLETAS OREO', 412, 500, 0, '2016-03-03', 0),
+(156, 'GALLETAS RAMO', 142, 200, 0, '2016-03-03', 0),
+(158, 'GALLETAS RECREO', 333, 500, 0, '2016-03-03', 0),
+(159, 'GALLETAS SALTIN 3 TACOS', 2604, 3200, 0, '2016-03-03', 0),
+(160, 'GALLETAS SALTIN MEDIANO', 1798, 2200, 0, '2016-03-03', 0),
+(161, 'GALLETAS SALTIN MITITACO', 719, 1000, 0, '2016-03-03', 0),
+(162, 'GALLETAS TIPO LECHE', 111, 150, 0, '2016-03-03', 0),
+(163, 'GALLETAS TOSH MIEL', 447, 550, 0, '2016-03-03', 0),
+(164, 'GALLETAS WAFER NOEL', 214, 300, 0, '2016-03-03', 0),
+(165, 'GALLETAS WAFER SURTIDA', 450, 550, 0, '2016-03-03', 0),
+(166, 'GASEOSA BIG COLA 1.7', 1812, 2300, 0, '2016-03-03', 0),
+(167, 'GASEOSA BIG COLA 400', 729, 1000, 0, '2016-03-03', 0),
+(168, 'GASEOSA COCACOLA 1.5 LTS NEGRA', 2167, 2700, 0, '2016-03-03', 0),
+(169, 'GASEOSA COCACOLA 1.5 LTS SABORES', 1850, 2300, 0, '2016-03-03', 0),
+(170, 'GASEOSA COCACOLA 1.75 LTS NEGRA', 2283, 2850, 0, '2016-03-03', 0),
+(171, 'GASEOSA COCA COLA 1.75 LTS SABORES', 2175, 2700, 0, '2016-03-03', 1),
+(172, 'GASEOSA COCACOLA 2 LTS NEGRA', 2875, 3600, 0, '2016-03-03', 0),
+(173, 'GASEOSA COCACOLA 2 LTS SABORES', 2625, 3300, 0, '2016-03-03', 0),
+(174, 'GASEOSA COCACOLA 2.5 LTS NEGRA', 3913, 4800, 0, '2016-03-03', 0),
+(175, 'GASEOSA COCACOLA 2.5 LTS SABORES', 3463, 4300, 0, '2016-03-03', 0),
+(157, 'GASEOSA COCACOLA 250 ML', 775, 1000, 0, '2016-03-03', 0),
+(152, 'GASEOSA COCACOLA 3 LTS', 4333, 5300, 0, '2016-03-03', 0),
+(151, 'GASEOSA COCACOLA 350 ML PET', 1120, 1400, 0, '2016-03-03', 0),
+(179, 'GASEOSA COCACOLA 350 ML ZERO', 1153, 1400, 0, '2016-03-03', 0),
+(180, 'GASEOSA COCACOLA 500 ML', 1333, 1700, 0, '2016-03-03', 0),
+(181, 'GASEOSA MINI LATA ', 1000, 1200, 0, '2016-03-03', 0),
+(182, 'GASEOSA POSTOBON 1.5 LTS', 4200, 2700, 0, '2016-03-03', 0),
+(183, 'GASEOSA POSTOBON 2.5 LTS', 3912, 4900, 0, '2016-03-03', 0),
+(184, 'GASEOSA POSTOBON 250 ML', 400, 700, 0, '2016-03-03', 0),
+(185, 'GASEOSA POSTOBON 3.125 LTS', 4333, 5400, 0, '2016-03-03', 0),
+(186, 'GASEOSA POSTOBON 350 ML', 1000, 1300, 0, '2016-03-03', 0),
+(187, 'GASEOSA POSTOBON 400 ML', 1290, 1600, 0, '2016-03-03', 0),
+(188, 'GATORADE', 2000, 2500, 0, '2016-03-03', 0),
+(189, 'GEL EGO', 553, 700, 0, '2016-03-03', 0),
+(190, 'GELATINA DE PATA', 142, 200, 0, '2016-03-03', 0),
+(191, 'GOLO CHIPS', 487, 600, 0, '2016-03-03', 0),
+(192, 'GOMAS GRISLY SPLASH CHOCOLATE', 146, 200, 0, '2016-03-03', 0),
+(193, 'GUDIZ', 500, 600, 0, '2016-03-03', 0),
+(194, 'HUEVOS', 227, 300, 0, '2016-03-03', 0),
+(195, 'IBUFLASH FORTE', 837, 1000, 0, '2016-03-03', 0),
+(196, 'IBUFLASH ULTRA FORTE', 1067, 1300, 0, '2016-03-03', 0),
+(197, 'IBUPROFENO', 98, 200, 0, '2016-03-03', 0),
+(198, 'JABON AXION DISCO', 700, 1000, 0, '2016-03-03', 0),
+(199, 'JABON BAÑO PROTEX', 1617, 2000, 0, '2016-03-03', 0),
+(200, 'JABON EN POLVO FAB 115 GRS', 800, 1000, 0, '2016-03-03', 0),
+(178, 'JABON EN POLVO FAB 225 GRS', 1700, 2100, 0, '2016-03-03', 0),
+(177, 'JABON LAVALOSA TRAS 150 GRS', 950, 1200, 0, '2016-03-03', 0),
+(176, 'JABON LAVALOSA CREEM 150 GRS', 850, 1100, 0, '2016-03-03', 0),
+(204, 'JABON REY', 1156, 1400, 0, '2016-03-03', 0),
+(205, 'JUGO CIFRUT 1.7 LTS', 1812, 2300, 0, '2016-03-03', 0),
+(206, 'JUGO CIFRUT MINI', 500, 650, 0, '2016-03-03', 0),
+(207, 'JUGO CIFRUT X 400 BOTELLA', 750, 1000, 0, '2016-03-03', 0),
+(208, 'JUGO DEL VALLE X 1.75 LTS', 2125, 2600, 0, '2016-03-03', 0),
+(209, 'JUGO FRUPER', 940, 1200, 0, '2016-03-03', 0),
+(210, 'JUGO HIT CAJITA', 875, 1100, 0, '2016-03-03', 0),
+(211, 'JUGO HIT CON GAS', 1417, 1800, 0, '2016-03-03', 0),
+(212, 'JUGO HIT EN BOTELLA X 250 CC', 1050, 1300, 0, '2016-03-03', 0),
+(213, 'LECHE ACHOCOLATADA ALPIN BOLSA', 1025, 1300, 0, '2016-03-03', 0),
+(214, 'LECHE CONDENSADA SOBRE', 475, 600, 0, '2016-03-03', 0),
+(215, 'LECHE DESLACTOSADA X 900 CC', 2290, 2900, 0, '2016-03-03', 0),
+(216, 'LECHE ENTERA X 500 ML', 950, 1200, 0, '2016-03-03', 0),
+(217, 'LECHE ENTERA X 900 ML', 2120, 2650, 0, '2016-03-03', 0),
+(218, 'LECHE KLIM RISTRA', 582, 800, 0, '2016-03-03', 0),
+(219, 'LECHERA DOY PACK X 100 GR', 1460, 1800, 0, '2016-03-03', 0),
+(220, 'LECHERA TARRO', 1293, 1600, 0, '2016-03-03', 0),
+(221, 'LIMPIDO BLANCOX', 862, 1100, 0, '2016-03-03', 0),
+(222, 'MAGGI CUBO', 229, 300, 0, '2016-03-03', 0),
+(223, 'MAGGI DESMENUZADO', 136, 300, 0, '2016-03-03', 0),
+(224, 'MANI BOLSITA', 130, 200, 0, '2016-03-03', 0),
+(225, 'MANI SAL LA ESPECIAL CON PASAS', 1079, 1300, 0, '2016-03-03', 0),
+(203, 'MANI SAL LA ESPECIAL', 958, 1200, 0, '2016-03-03', 0),
+(202, 'MANI MOTO', 544, 700, 0, '2016-03-03', 0),
+(201, 'MANTEQUILLA GUSTOCITA', 788, 1000, 0, '2016-03-03', 0),
+(229, 'MANTEQUILLA LA BUENA', 1112, 1400, 0, '2016-03-03', 0),
+(230, 'MAYONESA FRUCO', 800, 1000, 0, '2016-03-03', 0),
+(231, 'MECHERA DE GAS', 332, 500, 0, '2016-03-03', 0),
+(232, 'MILO RISTRA', 630, 800, 0, '2016-03-03', 0),
+(233, 'NESCAFE SOBRE', 113, 200, 0, '2016-03-03', 0),
+(234, 'NESCAFE SOBRE X 12 GR', 794, 1000, 0, '2016-03-03', 0),
+(235, 'NORAVER BEBIDA CALIENTE SOBRE', 953, 1200, 0, '2016-03-03', 0),
+(236, 'NORAVER GARGANTA', 731, 900, 0, '2016-03-03', 0),
+(237, 'NORAVER GRIPA CAPSULA', 725, 900, 0, '2016-03-03', 0),
+(238, 'NORAVER GRIPA TOS', 1017, 1200, 0, '2016-03-03', 0),
+(239, 'NOXPIRIN CALIENTE', 916, 1150, 0, '2016-03-03', 0),
+(240, 'NOXPIRIN CAPSULA', 600, 900, 0, '2016-03-03', 0),
+(241, 'NUCITA', 254, 300, 0, '2016-03-03', 0),
+(242, 'OKA LOKA FUSION', 387, 500, 0, '2016-03-03', 0),
+(243, 'OKA LOKA MEZCLA LOKA', 74, 100, 0, '2016-03-03', 0),
+(244, 'PAN BLANCO BIMBO TAJADO', 2600, 3250, 0, '2016-03-03', 0),
+(245, 'PANELA', 900, 1100, 0, '2016-03-03', 0),
+(246, 'PAÑALES ETAPA 4', 609, 750, 0, '2016-03-03', 1),
+(247, 'PAPAS MARGARITA', 946, 1200, 0, '2016-03-03', 0),
+(248, 'PAPEL HIGIENICO', 1231, 1500, 0, '2016-03-03', 0),
+(249, 'PASEDOL', 250, 300, 0, '2016-03-03', 0),
+(250, 'PASTILLAS VICK', 1000, 1250, 0, '2016-03-03', 0),
+(228, 'PAX DIA', 1070, 1300, 0, '2016-03-03', 0),
+(227, 'PAX NOCHE', 1100, 1400, 0, '2016-03-03', 0),
+(226, 'PEGANTE INSTANTANEO LA DURITA', 393, 600, 0, '2016-03-03', 0),
+(254, 'PEGANTE INSTANTANEO SUPER GLUE', 421, 700, 0, '2016-03-03', 0),
+(255, 'PIAZZA JIRAFA', 167, 200, 0, '2016-03-03', 0),
+(256, 'PILAS VARTA AA', 1110, 1400, 0, '2016-03-03', 0),
+(257, 'PONQUE PIPIOLO', 600, 750, 0, '2016-03-03', 0),
+(258, 'PLATANITOS NATUCHIPS', 946, 1200, 0, '2016-03-03', 0),
+(259, 'PONQUE BARRITA RAMO', 485, 600, 0, '2016-03-03', 0),
+(260, 'PONQUE BROWNIE', 1100, 1400, 0, '2016-03-03', 0),
+(261, 'PONQUE CASERO', 2300, 2900, 0, '2016-03-03', 0),
+(262, 'PONQUE CHOCORRAMO', 870, 1100, 0, '2016-03-03', 0),
+(263, 'PONQUE CHOCOSO', 870, 1100, 0, '2016-03-03', 0),
+(264, 'PONQUE GALA RAMO', 821, 1000, 0, '2016-03-03', 0),
+(265, 'PONQUE GANZITO RAMO', 418, 500, 0, '2016-03-03', 0),
+(266, 'PONQUE RAMITO X 2', 609, 800, 0, '2016-03-03', 0),
+(267, 'PONQUE TRADICIONAL RAMO', 2046, 2500, 0, '2016-03-03', 0),
+(268, 'PONY MALTA MINI X 200 ', 677, 900, 0, '2016-03-03', 0),
+(269, 'PONY MALTA 1.5 LTS', 2533, 3200, 0, '2016-03-03', 0),
+(270, 'PONY MALTA 330 CC', 1196, 1500, 0, '2016-03-03', 0),
+(271, 'PONY MALTA LITRO', 1692, 2100, 0, '2016-03-03', 0),
+(272, 'PRESERVATIVOS DUO', 1000, 1300, 0, '2016-03-03', 1),
+(273, 'PRESTOBARBA GILLETE', 1575, 2000, 0, '2016-03-03', 0),
+(274, 'PRESTOBARBA MINORA', 975, 1200, 0, '2016-03-03', 0),
+(275, 'PURINA DOG SHOW X 400 GR', 2164, 2700, 0, '2016-03-03', 0),
+(251, 'PURINA GATSY', 3102, 3800, 0, '2016-03-03', 0),
+(252, 'ACEITE RICAPALMA X 500 CC', 2650, 3300, 0, '2016-03-03', 1),
+(280, 'NORAVER FAST TOTAL', 967, 1200, 0, '2016-03-03', 0),
+(281, 'PAÑITOS X 24', 2238, 2800, 0, '2016-03-03', 0),
+(282, 'PONQUE BRAWNI', 1100, 1400, 0, '2016-03-03', 0),
+(283, 'PONQUE SUBMARINO', 435, 600, 0, '2016-03-03', 0),
+(278, 'SOFLAN SOBRE X 210 GR', 650, 900, 0, '2016-03-03', 0),
+(277, 'SOFLAN SOBRE X 50 GR', 166, 400, 0, '2016-03-03', 0),
+(276, 'APRONAX', 912, 1200, 0, '2016-03-03', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `idProveedor` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombresProveedor` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `descripcion` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `numeroContactoProveedor` varchar(50) NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idProveedor`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipodocumento`
+--
+
+CREATE TABLE IF NOT EXISTS `tipodocumento` (
+  `idTipoDocumento` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tipoDocumento` varchar(50) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`idTipoDocumento`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Volcado de datos para la tabla `tipodocumento`
+--
+
+INSERT INTO `tipodocumento` (`idTipoDocumento`, `tipoDocumento`) VALUES
+(1, 'CEDULA DE CIUDADANIA'),
+(2, 'CEDULA DE EXTRANJERIA'),
+(3, 'TARJETA DE IDENTIDAD');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `idUsuario` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `password` varchar(50) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`idUsuario`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`idUsuario`, `username`, `password`) VALUES
+(1, 'admin', '3d9e4119402b7a7672e44bcee8a215529a66b10b'),
+(3, 'celador', '86ed12beb2a40c110f180fe047431fbfe780e9d1');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vendedor`
+--
+
+CREATE TABLE IF NOT EXISTS `vendedor` (
+  `idVendedor` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombresVendedor` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `apellidosVendedor` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `idTipoDocumento` int(10) unsigned NOT NULL,
+  `numeroIdentificacion` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `fechaNacimiento` date NOT NULL,
+  `genero` char(1) CHARACTER SET latin1 NOT NULL,
+  `numeroContacto` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `fechaInicio` date NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idVendedor`),
+  KEY `fk_vendedor_tipoDocumento_idx` (`idTipoDocumento`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `vendedor`
+--
+
+INSERT INTO `vendedor` (`idVendedor`, `nombresVendedor`, `apellidosVendedor`, `idTipoDocumento`, `numeroIdentificacion`, `fechaNacimiento`, `genero`, `numeroContacto`, `fechaInicio`, `activo`) VALUES
+(1, 'ERALDO', 'MENDEZ VELAZQUEZ', 1, '12233594', '1968-10-09', 'M', '3132145656', '2014-08-01', 1),
+(2, 'FABIO', 'ERAZO QUINAYAS', 1, '12181699', '1983-05-01', 'M', '3222330583', '2014-11-01', 1),
+(3, 'RUBEN DARIO', 'MEDINA PEREZ', 1, '1083890196', '1990-11-12', 'M', '3213553689', '2015-08-30', 0),
+(4, 'ESTIVEN ', 'LEITON ORDOÑEZ', 1, '83040721', '1981-11-23', 'M', '3177624273', '2015-11-01', 1);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
