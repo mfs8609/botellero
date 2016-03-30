@@ -45,7 +45,13 @@ class ProductoController extends Controller
 				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
+			/*
 			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+			*/
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('precioProducto'),
 				'users'=>array('*'),
 			),
 		);
@@ -198,5 +204,15 @@ class ProductoController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionPrecioProducto()
+	{
+		$id = $_GET['id'];
+		$producto = Producto::model()->findByPk($id);
+
+		$json = ['precio' => $producto->precioVenta];
+
+		echo CJSON::encode($json);
 	}
 }

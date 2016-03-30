@@ -20,7 +20,7 @@
 	<?php echo $form->errorSummary(array_merge(array($model),$validatedMembers)); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fechaVenta'); ?>
+		<?php echo $form->labelEx($model,'fechaVenta');?>
 
 		<?php $this->widget ('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker',
                 array(
@@ -54,6 +54,31 @@
 		<?php echo $form->dropDownList($model,'idVendedor', CHtml::listData(Vendedor::model()->findAll("activo=1"), 'idVendedor', 'FullName'), array('prompt' => 'SELECCIONAR')); ?>
 		<?php echo $form->error($model,'idVendedor'); ?>
 	</div>
+
+	<!--Sección del label de subtotal-->
+
+	<div class="row">
+		<?php echo '<label> Subtotal </label>'?>
+		<?php echo '<input id="subtotal" type="text" size="10" disabled value=0>'?>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("input[id^='Detalle_cantidad']").on('change', function(){
+				var selector = $(this).parent().parent().find("select");
+				addSubtotal(selector.val(), $(this).val());
+			});
+		});
+		function addSubtotal(id, cantidad){
+			var precio = 0;
+			$.get('../producto/precioproducto', {id}, function(data){
+				var json = $.parseJSON(data);
+				var subtotal = parseInt($("#subtotal").val());
+				subtotal += json.precio*cantidad;
+				$("#subtotal").val(subtotal);			
+			});
+		}
+	</script>
 
 	<?php
 	// see http://www.yiiframework.com/doc/guide/1.1/en/form.table
