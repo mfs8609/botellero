@@ -58,7 +58,7 @@
 	<!--Sección del label de subtotal-->
 
 	<div class="row">
-		<?php echo '<label> Subtotal </label>'?>
+		<?php echo '<label> Total </label>'?>
 		<?php echo '<input id="subtotal" type="text" size="10" disabled value=0>'?>
 	</div>
 

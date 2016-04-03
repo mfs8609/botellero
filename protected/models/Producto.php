@@ -136,6 +136,7 @@ class Producto extends CActiveRecord
 
 	public function getProductoPrecio()
 	{
-		return $this->descripcion.' -PRECIO- $'.$this->precioVenta;
+		$precioVenta = "$" . number_format($this->precioVenta, 0, ",", "."); 
+
+		return $this->descripcion.' -PRECIO- '.$precioVenta;
 	}
-}
