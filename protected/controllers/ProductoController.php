@@ -45,15 +45,17 @@ class ProductoController extends Controller
 				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
-			/*
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-			*/
+
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('precioProducto'),
 				'users'=>array('*'),
 			),
+			
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+
+			
 		);
 	}
 

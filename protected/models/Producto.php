@@ -140,3 +140,5 @@ class Producto extends CActiveRecord
 
 		return $this->descripcion.' -PRECIO- '.$precioVenta;
 	}
+
+}
